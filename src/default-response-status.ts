@@ -4,7 +4,7 @@ enum DefaultResponseStatus {
 	VALIDATION_ERROR = "validation_error",
 	UNAUTHENTICATED = "unauthenticated",
 	UNAUTHORIZED = "unauthorized",
-	NOT_FOUND = "not_found"
+	NOT_FOUND = "not_found",
 }
 
 export default DefaultResponseStatus;

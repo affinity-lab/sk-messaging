@@ -7,6 +7,8 @@ import type {MessageResultHandler} from "./types";
 export default class Messenger {
 
 	private handlers: { [p: string | number]: MessageResultHandler } = {}
+	private anyHandler?: MessageResultHandler;
+	private otherHandler?: MessageResultHandler;
 
 	constructor(private data: any, private url: string, private messageId: number, private defaultHandler?: (res: MessageResult) => void) {}
 
@@ -23,6 +25,8 @@ export default class Messenger {
 			} else if (this.handlers.hasOwnProperty(DefaultResponseStatus.ERROR)) {
 				this.handlers[DefaultResponseStatus.ERROR](res);
 			}
+			if(!res.isHandled && this.otherHandler !== undefined) this.otherHandler(res);
+			if(this.anyHandler !== undefined) this.anyHandler(res);
 			if (this.defaultHandler !== undefined) this.defaultHandler(res);
 			return res;
 		})
@@ -31,6 +35,14 @@ export default class Messenger {
 	on(status: string | number | Array<string | number>, handler: MessageResultHandler): this {
 		if (!Array.isArray(status)) status = [status];
 		status.forEach((status: string | number) => this.handlers[status] = handler);
+		return this;
+	}
+	any(handler: MessageResultHandler):this{
+		this.anyHandler = handler;
+		return this;
+	}
+	other(handler: MessageResultHandler):this{
+		this.otherHandler = handler;
 		return this;
 	}
 
