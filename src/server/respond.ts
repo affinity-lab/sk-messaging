@@ -1,4 +1,4 @@
-export default function respond(status: string | number, message: any, headers: { [p: string]: string } = {}) {
+export default function respond(status: string | number, message: any = null, headers: { [p: string]: string } = {}) {
 	let response = {
 		status: status,
 		message: message

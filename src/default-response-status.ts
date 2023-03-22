@@ -5,6 +5,7 @@ enum DefaultResponseStatus {
 	UNAUTHENTICATED = "unauthenticated",
 	UNAUTHORIZED = "unauthorized",
 	NOT_FOUND = "not_found",
+	DUPLICATE_ENTRY = "duplicate-entry"
 }
 
 export default DefaultResponseStatus;
