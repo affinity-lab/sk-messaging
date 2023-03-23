@@ -1,4 +1,4 @@
-import axios, {AxiosError} from "axios";
+import axios, {AxiosError, type AxiosProgressEvent} from "axios";
 import MessageResult from "./message-result";
 import type {MessageResultHandler} from "./types";
 
@@ -26,7 +26,7 @@ export default class Messenger {
 		private catchHandler: (error: any) => void = (error: any) => console.error(error)
 	) {}
 
-	private async call(): Promise<UnknownError | MessageResult | HttpError> {
+	private async call(upload?:(evt:AxiosProgressEvent)=>void, download?:(evt:AxiosProgressEvent)=>void): Promise<UnknownError | MessageResult | HttpError> {
 		let response;
 		try {
 			return new MessageResult(
@@ -35,7 +35,9 @@ export default class Messenger {
 					this.data,
 					{
 						headers: {"content-type": "multipart/form-data"},
-						params: {"message-id": this.messageId}
+						params: {"message-id": this.messageId},
+						onDownloadProgress: download,
+						onUploadProgress: upload,
 					}
 				)
 			);
@@ -45,8 +47,8 @@ export default class Messenger {
 		}
 	}
 
-	async send(upload?: () => void, download?: () => void) {
-		return this.call()
+	async send(upload?:(evt:AxiosProgressEvent)=>void, download?:(evt:AxiosProgressEvent)=>void) {
+		return this.call(upload,download)
 			.then(res => {
 				if (res instanceof HttpError) {
 					this.errorHandler(res.error);

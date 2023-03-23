@@ -1,6 +1,6 @@
 {
   "name": "@affinity-lab/sk-messaging",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "index.js",
   "author": {
     "name": "Gergely Laborci"
